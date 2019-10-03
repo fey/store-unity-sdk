@@ -93,6 +93,11 @@ public class GroupsController : MonoBehaviour
 		return _groups.Find((group => group.IsSelected()));
 	}
 
+	public List<IGroup> GetGroups()
+	{
+		return _groups;
+	}
+
 	string GetGroupName(Groups groups, string groupId)
 	{
 		var group = groups.groups.First(g => g.external_id == groupId);

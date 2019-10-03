@@ -19,7 +19,7 @@ public class CartItemContainer : MonoBehaviour, IContainer
 	[SerializeField]
 	Transform itemParent;
 
-	List<GameObject> _cartItems;
+	List<CartItemUI> _cartItems;
 
 	GameObject _discountPanel;
 	GameObject _cartControls;
@@ -30,7 +30,7 @@ public class CartItemContainer : MonoBehaviour, IContainer
 
 	void Awake()
 	{
-		_cartItems = new List<GameObject>();
+		_cartItems = new List<CartItemUI>();
 		
 		_storeController = FindObjectOfType<StoreController>();
 		_cartGroup = FindObjectOfType<CartGroupUI>();
@@ -53,8 +53,9 @@ public class CartItemContainer : MonoBehaviour, IContainer
 	void AddCartItem(CartItemModel itemInformation)
 	{
 		GameObject newItem = Instantiate(cartItemPrefab, itemParent);
-		newItem.GetComponent<CartItemUI>().Initialize(itemInformation);
-		_cartItems.Add(newItem);
+		CartItemUI itemUi = newItem.GetComponent<CartItemUI>();
+		itemUi.Initialize(itemInformation);
+		_cartItems.Add(itemUi);
 	}
 
 	public void Refresh()
@@ -98,12 +99,17 @@ public class CartItemContainer : MonoBehaviour, IContainer
 	{
 		foreach (var item in _cartItems)
 		{
-			Destroy(item);
+			Destroy(item.gameObject);
 		}
 		
 		_cartItems.Clear();
 		
 		Destroy(_discountPanel);
 		Destroy(_cartControls);
+	}
+
+	List<IItemSelection> IContainer.GetItems()
+	{
+		return _cartItems.OfType<IItemSelection>().ToList();
 	}
 }

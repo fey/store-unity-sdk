@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Xsolla.Store;
 
-public class InventoryItemUI : MonoBehaviour
+public class InventoryItemUI : MonoBehaviour, IItemSelection
 {
 	[SerializeField]
 	Image itemImage;
@@ -64,5 +64,17 @@ public class InventoryItemUI : MonoBehaviour
 				StoreController.ItemIcons.Add(url, sprite);
 			}
 		}
+	}
+
+	public void Focus()
+	{
+		gameObject.AddComponent<ItemSelection>();
+	}
+
+	public void Unfocus()
+	{
+		Component c = gameObject.GetComponent<ItemSelection>();
+		if (c != null)
+			Destroy(c);
 	}
 }

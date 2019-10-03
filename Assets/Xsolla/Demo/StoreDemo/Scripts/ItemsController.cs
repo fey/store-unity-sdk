@@ -61,6 +61,14 @@ public class ItemsController : MonoBehaviour
 		_containers.Add(containerName, newContainer);
 	}
 
+	public List<IItemSelection> GetItemsByGroupId(string groupId)
+	{
+		if (!_containers.ContainsKey(groupId))
+			return new List<IItemSelection>();
+		IContainer container = _containers[groupId].GetComponent<IContainer>();
+		return container.GetItems();
+	}
+
 	public void ActivateContainer(string groupId)
 	{
 		foreach (var container in _containers.Values)

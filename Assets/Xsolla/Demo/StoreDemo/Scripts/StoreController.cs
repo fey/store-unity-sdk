@@ -35,7 +35,7 @@ public class StoreController : MonoBehaviour
 		_itemsController = FindObjectOfType<ItemsController>();
 		_extraController = FindObjectOfType<ExtraController>();
 		_itemsTabControl = FindObjectOfType<ItemsTabControl>();
-		
+
 		CartModel = new CartModel();
 		
 		ItemIcons = new Dictionary<string, Sprite>();

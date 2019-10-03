@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ItemContainer : MonoBehaviour, IContainer
@@ -24,11 +25,21 @@ public class ItemContainer : MonoBehaviour, IContainer
 		_items.Add(item);
 	}
 
+	public List<ItemUI> GetItems()
+	{
+		return _items;
+	}
+
 	public void Refresh()
 	{
 		foreach (var item in _items)
 		{
 			item.Refresh();
 		}
+	}
+
+	List<IItemSelection> IContainer.GetItems()
+	{
+		return _items.OfType<IItemSelection>().ToList();
 	}
 }

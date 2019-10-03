@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Xsolla.Core;
 
-public class CartItemUI : MonoBehaviour
+public class CartItemUI : MonoBehaviour, IItemSelection
 {
 	[SerializeField]
 	Image itemImage;
@@ -96,5 +96,17 @@ public class CartItemUI : MonoBehaviour
 				StoreController.ItemIcons.Add(url, sprite);
 			}
 		}
+	}
+
+	public void Focus()
+	{
+		gameObject.AddComponent<ItemSelection>();
+	}
+
+	public void Unfocus()
+	{
+		Component c = gameObject != null ? gameObject.GetComponent<ItemSelection>() : null;
+		if (c != null)
+			Destroy(c);
 	}
 }

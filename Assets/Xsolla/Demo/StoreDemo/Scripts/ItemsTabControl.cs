@@ -11,14 +11,12 @@ public class ItemsTabControl : MonoBehaviour
 	MenuButton storeButton;
 	[SerializeField]
 	MenuButton inventoryButton;
-	
+
 	[SerializeField]
 	SimpleButton clearCartButton;
 
-	public Action OnClearCart
-	{
-		set
-		{
+	public Action OnClearCart {
+		set {
 			clearCartButton.onClick = value;
 		}
 	}
@@ -27,53 +25,55 @@ public class ItemsTabControl : MonoBehaviour
 	{
 		var groupsController = FindObjectOfType<GroupsController>();
 		var itemsController = FindObjectOfType<ItemsController>();
-		
+
 		storeButton.gameObject.SetActive(true);
 		inventoryButton.gameObject.SetActive(true);
-		
+
 		storeButton.Select(false);
-		
-		storeButton.onClick = ((s) =>
-		{
+
+		storeButton.onClick = ((s) => {
 			inventoryButton.Deselect();
 
 			var selectedGroup = groupsController.GetSelectedGroup();
 
-			if (selectedGroup != null)
-			{
+			if (selectedGroup != null) {
 				itemsController.ActivateContainer(selectedGroup.Id);
 
-				if (selectedGroup.Id == Constants.CartGroupName)
-				{
+				if (selectedGroup.Id == Constants.CartGroupName) {
 					clearCartButton.gameObject.SetActive(true);
 				}
 			}
 		});
-		
-		inventoryButton.onClick = ((s) =>
-		{
+
+		inventoryButton.onClick = ((s) => {
 			storeButton.Deselect();
-			
+
 			itemsController.ActivateContainer(Constants.InventoryConatainerName);
-			
+
 			clearCartButton.gameObject.SetActive(false);
 		});
 	}
 
 	public void ActivateStoreTab(string groupID)
 	{
-		if (groupID != Constants.CartGroupName)
-		{
+		if (groupID != Constants.CartGroupName) {
 			storeButton.Text = StoreButtonText;
 			clearCartButton.gameObject.SetActive(false);
-		}
-		else
-		{
+		} else {
 			storeButton.Text = CartButtonText;
 			clearCartButton.gameObject.SetActive(true);
 		}
-		
-		storeButton.Select(false);
+
+		storeButton.Select(false)	;
 		inventoryButton.Deselect();
+	}
+
+	public void SelectStoreTab()
+	{
+		this.storeButton.Select();
+	}
+	public void SelectInventoryTab()
+	{
+		this.inventoryButton.Select();
 	}
 }
