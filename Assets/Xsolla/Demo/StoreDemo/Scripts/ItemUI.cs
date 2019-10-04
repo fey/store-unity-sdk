@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,8 +27,13 @@ public class ItemUI : MonoBehaviour, IItemSelection
 
 	Sprite _itemImage;
 
+	DateTime startLoading;
+	DateTime startInit;
+
 	void Awake()
 	{
+		startInit = DateTime.Now;
+
 		_storeController = FindObjectOfType<StoreController>();
 		_itemsController = FindObjectOfType<ItemsController>();
 
@@ -97,6 +103,7 @@ public class ItemUI : MonoBehaviour, IItemSelection
 
 	void OnEnable()
 	{
+		startLoading = DateTime.Now;
 		if (_itemImage == null && !string.IsNullOrEmpty(_itemInformation.image_url))
 		{
 			if (StoreController.ItemIcons.ContainsKey(_itemInformation.image_url))
@@ -122,7 +129,7 @@ public class ItemUI : MonoBehaviour, IItemSelection
 		{
 			yield return www;
 			
-			yield return new WaitForSeconds(Random.Range(0.0f, 1.5f));
+			yield return new WaitForSeconds(UnityEngine.Random.Range(0.0f, 1.5f));
 			
 			var sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0.5f, 0.5f));
 
@@ -136,6 +143,19 @@ public class ItemUI : MonoBehaviour, IItemSelection
 				StoreController.ItemIcons.Add(url, sprite);
 			}
 		}
+
+		float fromStart = Time.realtimeSinceStartup;
+		DateTime now = DateTime.Now;
+		TimeSpan init = now - startInit;
+		TimeSpan load = now - startLoading;
+		itemName.text = "s:" + fromStart.ToString("F2") + "_i:" + init.TotalSeconds.ToString("F2") + "_l: " + load.TotalSeconds.ToString("F2");
+		StartCoroutine(DeleteTimings(60.0F));
+	}
+
+	IEnumerator DeleteTimings(float time)
+	{
+		yield return new WaitForSeconds(time);
+		itemName.text = _itemInformation.name;
 	}
 
 	public void Focus()

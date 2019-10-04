@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Xsolla.Store;
@@ -21,9 +22,18 @@ public class InventoryItemUI : MonoBehaviour, IItemSelection
 	StoreController _storeController;
 
 	Sprite _itemImage;
-	
+
+	DateTime startLoading;
+	DateTime startInit;
+
+	private void Awake()
+	{
+		startInit = DateTime.Now;
+	}
+
 	public void Initialize(InventoryItem itemInformation)
 	{
+		startLoading = DateTime.Now;
 		_itemInformation = itemInformation;
 
 		itemName.text = _itemInformation.name;
@@ -50,7 +60,7 @@ public class InventoryItemUI : MonoBehaviour, IItemSelection
 		{
 			yield return www;
 			
-			yield return new WaitForSeconds(Random.Range(0.0f, 1.5f));
+			yield return new WaitForSeconds(UnityEngine.Random.Range(0.0f, 1.5f));
 			
 			var sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0.5f, 0.5f));
 
@@ -63,7 +73,20 @@ public class InventoryItemUI : MonoBehaviour, IItemSelection
 			{
 				StoreController.ItemIcons.Add(url, sprite);
 			}
+
+			float fromStart = Time.realtimeSinceStartup;
+			DateTime now = DateTime.Now;
+			TimeSpan init = now - startInit;
+			TimeSpan load = now - startLoading;
+			itemName.text = "s:" + fromStart.ToString("F2") + "_i:" + init.TotalSeconds.ToString("F2") + "_l: " + load.TotalSeconds.ToString("F2");
+			StartCoroutine(DeleteTimings(60.0F));
 		}
+	}
+
+	IEnumerator DeleteTimings(float time)
+	{
+		yield return new WaitForSeconds(time);
+		itemName.text = _itemInformation.name;
 	}
 
 	public void Focus()
