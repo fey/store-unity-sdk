@@ -93,6 +93,7 @@ public class InventoryItemUI : MonoBehaviour
 			},
 			() => {
 				//testFlag = false;
+				_storeController.ShowSuccess();
 				_storeController.RefreshInventory();
 			},
 			_storeController.ShowError
