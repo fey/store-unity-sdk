@@ -15,7 +15,7 @@ public class Container : MonoBehaviour
 			return null;
 		}
 		GameObject go = Instantiate(prefabs[index++], canvas);
-		if (index > prefabs.Count)
+		if (index >= prefabs.Count)
 			index = 0;
 		return go;
 	}
