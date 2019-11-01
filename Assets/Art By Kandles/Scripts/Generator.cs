@@ -5,7 +5,7 @@ using UnityEngine;
 public class Generator : MonoBehaviour
 {
 	Container container;
-
+	
     void Start()
     {
 		container = gameObject.GetComponent<Container>();

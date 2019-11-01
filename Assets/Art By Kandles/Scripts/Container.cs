@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Container : MonoBehaviour
 {
+	int index;
 	public Transform canvas;
 	public List<GameObject> prefabs;
 
@@ -13,7 +14,9 @@ public class Container : MonoBehaviour
 			Debug.LogError("Halloween collection is empty!");
 			return null;
 		}
-		int index = Random.Range(0, prefabs.Count);
-		return Instantiate(prefabs[index], canvas);
+		GameObject go = Instantiate(prefabs[index++], canvas);
+		if (index > prefabs.Count)
+			index = 0;
+		return go;
 	}
 }

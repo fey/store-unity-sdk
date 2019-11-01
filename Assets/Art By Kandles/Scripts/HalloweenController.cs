@@ -8,17 +8,22 @@ public class HalloweenController : MonoBehaviour
 	Generator generator;
 	RectTransform canvasRect;
 
+	public List<GameObject> additionals;
+
 	void Start()
     {
 		generator = gameObject.GetComponent<Generator>();
 		canvasRect = canvas.GetComponent<RectTransform>();
+		additionals.ForEach(a => a.SetActive(false));
 		StartCoroutine(HalloweenCoroutine());
     }
 
     IEnumerator HalloweenCoroutine()
 	{
+		yield return new WaitForSeconds(3.0F);
+		additionals.ForEach(a => a.SetActive(true));
 		while (true) {
-			yield return new WaitForSeconds(Random.Range(2.0f, 4.0f));
+			yield return new WaitForSeconds(Random.Range(4.0f, 7.0f));
 
 			GameObject go = generator.GetItem();
 			Vector2 position = GetItemPosition();

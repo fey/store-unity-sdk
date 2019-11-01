@@ -7,7 +7,7 @@ public class Destroyer : MonoBehaviour, IPointerClickHandler
 {
 	void Start()
     {
-		StartCoroutine(DestroyCoroutine(3.0F));
+		StartCoroutine(DestroyCoroutine(10.0F));
     }
 
 	IEnumerator DestroyCoroutine(float seconds)
