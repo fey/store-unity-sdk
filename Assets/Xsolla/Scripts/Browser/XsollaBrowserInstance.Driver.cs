@@ -1,0 +1,80 @@
+﻿using UnityEngine;
+using System;
+using System.Collections;
+using System.Drawing;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.Extensions;
+using UnityEngine.UI;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Collections.Concurrent;
+using OpenQA.Selenium.Interactions;
+
+public partial class XsollaBrowserInstance : IDisposable
+{
+	private ChromeDriver driver;
+	private Thread driverThread;
+	private bool needToBeClosed;
+
+	void DriverThread(object driverPath)
+	{
+		Initialization((string)driverPath);
+
+		while (!needToBeClosed) {
+			try {
+				ProccessCommandForDriver();
+			} catch(Exception e) {
+				LogEvent?.Invoke("Error: " + e.Message);
+			}
+		}
+
+		Destruction();
+	}
+
+	void Initialization(string driverPath)
+	{
+		LogEvent?.Invoke("Initialization");
+		string chromePath = driverPath + "/Xsolla/Plugins/Selenium/lib/Selenium.WebDriver.ChromeDriver.78.0.3904.10500/driver/mac64";
+		try {
+			ChromeOptions options = new ChromeOptions();
+			options.AddArgument("--headless");
+			//options.AddArgument("window-size=800x600");
+			options.AddArguments("--proxy-server='direct://'");
+			options.AddArguments("--proxy-bypass-list=*");
+			options.AddArguments("disable-gpu=false");
+			options.PageLoadStrategy = PageLoadStrategy.Eager;
+			driver = new ChromeDriver(chromePath, options);
+		} catch (Exception e) {
+			LogEvent?.Invoke("Error: " + e.Message);
+		}
+		ChangeSizeTo(800, 600);
+	}
+
+	void Destruction()
+	{
+		commands.GetConsumingEnumerable();
+		commands.Dispose();
+		commands = null;
+		driver.Quit();
+		driver.Dispose();
+		driver = null;
+		driverThread = null;
+	}
+
+	CommandFactory.ICommand ProccessCommandForDriver()
+	{
+		commands.TryTake(out CommandFactory.ICommand command, 10);
+		command?.Invoke();
+		return command;
+	}
+
+	public void Dispose()
+	{
+		LogEvent?.Invoke("Destructor invoked!!!");
+		needToBeClosed = true;
+		driverThread?.Join();
+	}
+}
