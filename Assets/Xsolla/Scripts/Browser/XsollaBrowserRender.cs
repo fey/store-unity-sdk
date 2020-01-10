@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class XsollaBrowserRender : MonoBehaviour
 {
-	public Image image;
+	public UnityEngine.UI.Image image;
 	public SpriteRenderer spriteRenderer;
 
 	private XsollaBrowser browser;

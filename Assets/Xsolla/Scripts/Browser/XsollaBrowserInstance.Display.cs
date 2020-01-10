@@ -19,7 +19,7 @@ public partial class XsollaBrowserInstance : IDisposable
 
 	public void Redraw(Action callback = null)
 	{
-		LogEvent?.Invoke("Redraw method");
+		Log("Display: Redraw method");
 		AddCommand(RedrawCommand, callback);
 	}
 
@@ -31,7 +31,7 @@ public partial class XsollaBrowserInstance : IDisposable
 				throw new Exception("Screenshot is null!!!");
 			RedrawComplete?.Invoke(screenshot.AsByteArray, Size);
 		} catch(Exception e) {
-			LogEvent?.Invoke("Taking screenshot error: " + e.Message);
+			Log("Display: Taking screenshot error: " + e.Message);
 		}
 	}
 

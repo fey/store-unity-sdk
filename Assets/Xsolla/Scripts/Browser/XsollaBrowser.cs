@@ -29,7 +29,7 @@ public class XsollaBrowser : MonoBehaviour
 	}
 
 	public SpriteRenderer spriteRenderer;
-	public Image image;
+	public UnityEngine.UI.Image image;
 
 	public event Action<byte[], Size> RedrawComplete;
 	public byte[] Data { get; private set; }
@@ -98,18 +98,18 @@ public class XsollaBrowser : MonoBehaviour
 	static bool needLogs = true;
 	bool thisLogs = false;
 	Vector2 scrollPosition = Vector2.zero;
-	private void OnGUI()
-	{
-		if(needLogs) {
-			needLogs = false;
-			thisLogs = true;
-		}
-		if (thisLogs) {
-			scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(Screen.width / 2.0F), GUILayout.Height(Screen.height / 2.0F));
-			GUILayout.TextArea(logs);
-			GUILayout.EndScrollView();
-		}
-	}
+	//private void OnGUI()
+	//{
+	//	if(needLogs) {
+	//		needLogs = false;
+	//		thisLogs = true;
+	//	}
+	//	if (thisLogs) {
+	//		scrollPosition = GUILayout.BeginScrollView(scrollPosition, true, true, GUILayout.Width(Screen.width / 2.0F), GUILayout.Height(Screen.height / 2.0F));
+	//		GUILayout.TextArea(logs);
+	//		GUILayout.EndScrollView();
+	//	}
+	//}
 
 	void Update()
 	{

@@ -5,7 +5,7 @@ public partial class XsollaBrowserInstance : IDisposable
 {
 	public void InputKeys(string keys, Action callback = null)
 	{
-		LogEvent?.Invoke("Input keys method");
+		Log("Keyboard: Input keys method");
 		AddCommand(InputKeysCommand, keys, callback);
 	}
 
@@ -18,7 +18,7 @@ public partial class XsollaBrowserInstance : IDisposable
 
 	public void KeyDown(string key, Action callback = null)
 	{
-		LogEvent?.Invoke("KeyDown method");
+		Log("Keyboard: KeyDown method");
 		AddCommand(KeyDownCommand, key, callback);
 	}
 
@@ -32,7 +32,7 @@ public partial class XsollaBrowserInstance : IDisposable
 
 	public void KeyUp(string key, Action callback = null)
 	{
-		LogEvent?.Invoke("KeyUp method");
+		Log("Keyboard: KeyUp method");
 		AddCommand(KeyUpCommand, key, callback);
 	}
 

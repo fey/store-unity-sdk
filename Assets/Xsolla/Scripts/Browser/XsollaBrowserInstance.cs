@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Collections.Concurrent;
 using OpenQA.Selenium.Interactions;
+using System.Runtime.CompilerServices;
 
 public partial class XsollaBrowserInstance : IDisposable
 {
@@ -87,25 +88,32 @@ public partial class XsollaBrowserInstance : IDisposable
 	public event Action<byte[], Size> RedrawComplete;
 	public event Action<string> LogEvent;
 
+	private readonly string DRIVER_PATH = Application.streamingAssetsPath;// Application.dataPath + "/Xsolla/Plugins";
+
 	public XsollaBrowserInstance()
 	{
 		commands = new BlockingCollection<CommandFactory.ICommand>(new ConcurrentQueue<CommandFactory.ICommand>(), 1024);
-		LogEvent?.Invoke("Ctor");
+		Log("Ctor");
 
 		driverThread = new Thread(DriverThread);
-		driverThread.Start(Application.dataPath);
+		driverThread.Start(DRIVER_PATH);
 	}
 
 	public void ChangeUrlTo(string newUrl, Action callback = null)
 	{
-		LogEvent?.Invoke("Change url method");
+		Log("Change url method");
 		AddCommand(UrlTask, newUrl, callback);
 	}
 	
 	void UrlTask(string url)
 	{
-		LogEvent?.Invoke("Url is changing");
+		Log("Url is changing");
 		driver.Navigate().GoToUrl(url);
 		driver.Manage().Window.Maximize();
+	}
+
+	void Log(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
+	{
+		LogEvent?.Invoke(message + " at " + lineNumber + " (" + caller + ")");
 	}
 }

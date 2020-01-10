@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class TestPNG : MonoBehaviour
 {
-	public Image image;
+	public UnityEngine.UI.Image image;
 	public Sprite source;
 
 	private Vector2 pivot;
